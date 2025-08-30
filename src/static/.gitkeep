@@ -1,0 +1,2 @@
+# This file ensures that Git tracks the static directory
+# Even when it's empty, Git will now include this folder
