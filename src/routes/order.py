@@ -3,14 +3,28 @@ from ..models.order import Order, Service
 from ..models.user import db
 from datetime import datetime
 import uuid
+from sqlalchemy import and_
 
 order_bp = Blueprint('order', __name__)
 
 @order_bp.route('/orders', methods=['GET'])
 def get_orders():
     try:
-        orders = Order.query.all()
-        return jsonify([order.to_dict() for order in orders]), 200
+        query = Order.query
+
+        status = request.args.get('status', type=str)
+        service_type = request.args.get('service_type', type=str)
+        per_page = request.args.get('per_page', default=50, type=int)
+
+        if status:
+            query = query.filter(Order.status == status)
+        if service_type:
+            query = query.filter(Order.service_type == service_type)
+
+        orders = query.order_by(Order.created_at.desc()).limit(per_page).all()
+        return jsonify({
+            'orders': [order.to_dict() for order in orders]
+        }), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

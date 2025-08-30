@@ -2,14 +2,37 @@ from flask import Blueprint, request, jsonify
 from ..models.customer import Customer
 from ..models.user import db
 import uuid
+from sqlalchemy import or_
 
 customer_bp = Blueprint('customer', __name__)
 
 @customer_bp.route('/customers', methods=['GET'])
 def get_customers():
     try:
-        customers = Customer.query.filter_by(is_active=True).all()
-        return jsonify([customer.to_dict() for customer in customers]), 200
+        query = Customer.query.filter_by(is_active=True)
+
+        search = request.args.get('search', type=str)
+        customer_type = request.args.get('customer_type', type=str)
+        per_page = request.args.get('per_page', default=50, type=int)
+
+        if search:
+            like = f"%{search}%"
+            query = query.filter(or_(
+                Customer.first_name.ilike(like),
+                Customer.last_name.ilike(like),
+                Customer.company_name.ilike(like),
+                Customer.email.ilike(like),
+                Customer.phone.ilike(like)
+            ))
+
+        if customer_type:
+            query = query.filter(Customer.customer_type == customer_type)
+
+        customers = query.limit(per_page).all()
+
+        return jsonify({
+            'customers': [customer.to_dict() for customer in customers]
+        }), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

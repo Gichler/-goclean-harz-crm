@@ -4,6 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './com
 import { Badge } from './components/ui/badge.jsx'
 import { Users, ClipboardList, MessageSquare, BarChart3, FileText, RefreshCw } from 'lucide-react'
 import Dashboard from './components/Dashboard.jsx'
+import Customers from './components/Customers.jsx'
+import Orders from './components/Orders.jsx'
+import Quotes from './components/Quotes.jsx'
+import Communications from './components/Communications.jsx'
 import './App.css'
 
 function App() {
@@ -22,13 +26,13 @@ function App() {
       case 'dashboard':
         return <Dashboard />
       case 'customers':
-        return <div className="p-6"><h2>Kunden - Coming Soon</h2></div>
+        return <Customers />
       case 'orders':
-        return <div className="p-6"><h2>Aufträge - Coming Soon</h2></div>
+        return <Orders />
       case 'quotes':
-        return <div className="p-6"><h2>Angebote - Coming Soon</h2></div>
+        return <Quotes />
       case 'communications':
-        return <div className="p-6"><h2>Kommunikation - Coming Soon</h2></div>
+        return <Communications />
       default:
         return <Dashboard />
     }
