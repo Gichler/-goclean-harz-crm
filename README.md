@@ -230,3 +230,47 @@ git fetch origin
 git rebase origin/main
 git push --force-with-lease
 ```
+
+## ✅ Fertig implementiert (Stand)
+
+- **Navigation & Views**: Linkes Menü in `src/App.jsx` zeigt jetzt echte Inhalte für:
+  - `Dashboard` (`src/components/Dashboard.jsx`)
+  - `Kunden` (`src/components/Customers.jsx` → nutzt Logik aus `Customers.jsx`)
+  - `Aufträge` (`src/components/Orders.jsx` → nutzt Logik aus `Orders.jsx`)
+  - `Angebote` (`src/components/Quotes.jsx` → nutzt Logik aus `Quotes.jsx`)
+  - `Kommunikation` (`src/components/Communications.jsx` → nutzt Logik aus `Communications.jsx`)
+- **UI-Basiskomponenten** (`src/components/ui/`): `input.jsx`, `select.jsx`, `dialog.jsx`, `label.jsx`, `textarea.jsx`.
+- **Utility**: `src/lib/utils.js` mit `cn(...)` für Klassen-Zusammenführung.
+- **Dashboard-Daten**: `GET /api/orders/dashboard` wird verwendet.
+- **Backend-APIs**:
+  - `src/routes/customer.py`: `GET /api/customers` (Suche/Filter, `per_page`), `POST`, `PUT`, `DELETE`. Rückgabeformat: `{ customers: [...] }`.
+  - `src/routes/order.py`: `GET /api/orders` (Filter: `status`, `service_type`, `per_page`), `POST`, `PUT`, `DELETE`, `GET /api/orders/dashboard`.
+  - `src/routes/communication.py`: `GET /api/communications`, `GET /api/communications/{id}`, `POST /api/communications`.
+  - `src/routes/quote.py`: `GET /api/quotes`, `GET /api/quotes/{id}`, `POST /api/quotes`, `PUT /api/quotes/{id}/status`, `GET /api/quote-templates`, `POST /api/quote-templates/{id}/generate`.
+  - `main.py`: Registrierung aller Blueprints (`customer_bp`, `order_bp`, `communication_bp`, `quote_bp`), DB-Init, CORS.
+- **Vite-Proxy**: `vite.config.js` proxied `/api` → `http://localhost:5000`.
+
+## 🔧 Änderungsübersicht (wichtigste Dateien)
+
+- Frontend
+  - `src/App.jsx`: Platzhalter entfernt, echte Komponenten eingebunden.
+  - `src/components/Customers.jsx`, `Orders.jsx`, `Quotes.jsx`, `Communications.jsx`: Wrapper, die bestehende Implementierungen aus Projektwurzel einbinden.
+  - `src/components/ui/*.jsx`: Neue UI-Basis.
+  - `src/lib/utils.js`: `cn`-Helper.
+- Backend
+  - `src/routes/customer.py`: GET mit Suche/Filter; Rückgabe-Envelope.
+  - `src/routes/order.py`: GET-Filter; sortierte Ausgabe; Dashboard-Endpoint bestätigt.
+  - `src/routes/communication.py`: Neu.
+  - `src/routes/quote.py`: Neu.
+  - `main.py`: Blueprints registriert.
+
+## 🧪 Aktueller Teststatus
+
+- Dev-Server gestartet (Frontend via `npm run dev`, Backend via `python main.py`).
+- Manuelle Klickprüfung: Navigation rendert alle genannten Views; Form-Dialoge öffnen. CRUD-Flows werden schrittweise geprüft (Erstellen, Detailansicht, Filter) – etwaige Fehler werden fortlaufend behoben.
+
+## 🔭 Offene Punkte / Nächste Schritte
+
+- Integration weiterer Bereiche (falls gewünscht): `Rechnungen`, `Lager`, `Qualität`, `Zeiterfassung` inkl. API-Routen und Menüeinbindung.
+- Konsolidierung von Komponenten, die aktuell noch im Projektwurzel liegen, in `src/`.
+- E2E- und API-Tests ergänzen; Validierungen und Fehlermeldungen verfeinern.
