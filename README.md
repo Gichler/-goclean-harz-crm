@@ -165,3 +165,68 @@ Bei Fragen oder Problemen:
 ---
 
 **Entwickelt mit ❤️ für GoClean Harz**
+
+## 📚 Git-Workflow: Commit, Merge, Squash, Rebase
+
+### Commit
+- Ein einzelner gespeicherter Änderungsstand mit Nachricht; kleinste Einheit der Historie.
+- Best Practices: kleine, thematisch klare Commits mit präziser Message.
+- Beispiele:
+  - `git add . && git commit -m "Fix: Telefonnummern-Validierung in Kundenformular"`
+
+### Merge (mit Merge-Commit)
+- Vereinigt zwei Branches; erstellt einen Merge-Commit (mit zwei Eltern), Historien bleiben unverändert.
+- Einsatz: wenn Team-Kontext/Verzweigungen sichtbar bleiben sollen.
+- Beispiele:
+  - `git checkout main && git pull`
+  - `git merge feature/kunden-suchen`
+
+### Merge-Commit
+- Der besondere Commit, der beim „normalen“ Merge entsteht und die beiden Entwicklungszweige verbindet.
+
+### Squash Merge
+- Fasst alle Commits eines Feature-Branches zu EINEM Commit zusammen und legt diesen auf dem Ziel-Branch ab.
+- Vorteile: sehr aufgeräumte Historie („ein Feature = ein Commit“). Nachteil: Detailverlauf des Features geht verloren.
+- Lokal:
+  - `git checkout main && git pull`
+  - `git merge --squash feature/angebote`
+  - `git commit -m "Feat: Angebote – Listen & Erstellen"`
+- In GitHub/GitLab: Option „Squash and merge“ im PR/MR.
+
+### Rebase
+- Spielt Commits eines Branches auf eine neue Basis (z. B. aktuellen `main`) um; erzeugt eine lineare Historie und schreibt Commits um.
+- Achtung: Nicht auf bereits gemeinsam genutzten/remote-geteilten Branches rebasen (History-Rewrite). Falls nötig, `--force-with-lease` verwenden.
+- Beispiele (lokal auf aktuellen `main` bringen):
+  - `git fetch origin`
+  - `git rebase origin/main`
+  - Konflikte lösen → `git rebase --continue`
+  - `git push --force-with-lease`
+
+### Rebase and merge (Hosting-Plattform-Option)
+- Rebased den Branch auf den Ziel-Branch und fast-forwarded ohne Merge-Commit; Historie bleibt linear, einzelne Commits bleiben erhalten.
+
+### Entscheidungshilfe (kurz)
+- Willst du lineare Historie und einzelne Commits behalten? → Rebase and merge.
+- Willst du lineare Historie, aber nur EIN Commit je Feature? → Squash merge.
+- Willst du Verzweigungen sichtbar behalten (Audit/Timeline)? → Normaler Merge (mit Merge-Commit).
+
+### Mini-Cheatsheet
+```bash
+# Commit
+git add -A
+git commit -m "<präzise Nachricht>"
+
+# Normaler Merge
+git checkout main && git pull
+git merge feature/x
+
+# Squash Merge (lokal)
+git checkout main && git pull
+git merge --squash feature/x
+git commit -m "Feat: ..."
+
+# Rebase auf aktuellen main
+git fetch origin
+git rebase origin/main
+git push --force-with-lease
+```
