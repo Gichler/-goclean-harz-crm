@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
-import { Button } from '@/components/ui/button.jsx'
-import { Input } from '@/components/ui/input.jsx'
-import { Badge } from '@/components/ui/badge.jsx'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog.jsx'
-import { Label } from '@/components/ui/label.jsx'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './src/components/ui/card.jsx'
+import { Button } from './src/components/ui/button.jsx'
+import { Input } from './src/components/ui/input.jsx'
+import { Badge } from './src/components/ui/badge.jsx'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './src/components/ui/dialog.jsx'
+import { Label } from './src/components/ui/label.jsx'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './src/components/ui/select.jsx'
 import { Plus, Search, Edit, Eye, Phone, Mail, MapPin } from 'lucide-react'
 
 const Customers = () => {

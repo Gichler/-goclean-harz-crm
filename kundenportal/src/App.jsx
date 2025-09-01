@@ -2,31 +2,53 @@ import { useState } from 'react'
 import { Button } from './components/ui/button.jsx'
 import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card.jsx'
 import { Badge } from './components/ui/badge.jsx'
-import { Users, BarChart3, RefreshCw, Wifi } from 'lucide-react'
+import { 
+  Home, 
+  ClipboardList, 
+  Receipt, 
+  User, 
+  MessageSquare, 
+  Calendar as CalendarIcon,
+  RefreshCw,
+  LogOut
+} from 'lucide-react'
 import Dashboard from './components/Dashboard.jsx'
-import Customers from './components/Customers.jsx'
-import ConnectionTest from './components/ConnectionTest.jsx'
+import Orders from './components/Orders.jsx'
+import Invoices from './components/Invoices.jsx'
+import Profile from './components/Profile.jsx'
+import Messages from './components/Messages.jsx'
+import Calendar from './components/Calendar.jsx'
 import './App.css'
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard')
+  const [customerId] = useState(1) // Demo-Kunden-ID
 
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-    { id: 'customers', label: 'Kunden', icon: Users },
-    { id: 'connection', label: 'Verbindungstest', icon: Wifi },
+    { id: 'dashboard', label: 'Dashboard', icon: Home },
+    { id: 'orders', label: 'Meine Aufträge', icon: ClipboardList },
+    { id: 'invoices', label: 'Meine Rechnungen', icon: Receipt },
+    { id: 'calendar', label: 'Termine', icon: CalendarIcon },
+    { id: 'messages', label: 'Nachrichten', icon: MessageSquare },
+    { id: 'profile', label: 'Profil', icon: User },
   ]
 
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <Dashboard />
-      case 'customers':
-        return <Customers />
-      case 'connection':
-        return <ConnectionTest />
+        return <Dashboard customerId={customerId} />
+      case 'orders':
+        return <Orders customerId={customerId} />
+      case 'invoices':
+        return <Invoices customerId={customerId} />
+      case 'calendar':
+        return <Calendar customerId={customerId} />
+      case 'messages':
+        return <Messages customerId={customerId} />
+      case 'profile':
+        return <Profile customerId={customerId} />
       default:
-        return <Dashboard />
+        return <Dashboard customerId={customerId} />
     }
   }
 
@@ -43,20 +65,24 @@ function App() {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="flex items-center">
-                  <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                     <span className="text-white font-bold text-sm">GC</span>
                   </div>
-                  <h1 className="ml-3 text-xl font-semibold text-gray-900">GoClean Harz CRM</h1>
+                  <h1 className="ml-3 text-xl font-semibold text-gray-900">GoClean Harz - Kundenportal</h1>
                 </div>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Badge variant="outline" className="text-green-600 border-green-600">
-                System Online
+              <Badge variant="outline" className="text-blue-600 border-blue-600">
+                Kundenportal
               </Badge>
               <Button variant="outline" size="sm" onClick={refreshData}>
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Aktualisieren
+              </Button>
+              <Button variant="outline" size="sm">
+                <LogOut className="h-4 w-4 mr-2" />
+                Abmelden
               </Button>
             </div>
           </div>
@@ -81,15 +107,12 @@ function App() {
                         onClick={() => setActiveTab(item.id)}
                         className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-none border-r-2 transition-colors ${
                           activeTab === item.id
-                            ? 'bg-green-50 text-green-700 border-green-500'
+                            ? 'bg-blue-50 text-blue-700 border-blue-500'
                             : 'text-gray-600 hover:bg-gray-50 border-transparent'
                         }`}
                       >
                         <Icon className="mr-3 h-5 w-5" />
                         {item.label}
-                        <span className="ml-auto bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">
-                          {item.id === 'dashboard' ? '1' : '2'}
-                        </span>
                       </button>
                     )
                   })}

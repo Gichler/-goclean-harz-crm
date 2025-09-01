@@ -10,6 +10,12 @@ from flask_cors import CORS
 from src.models.user import db
 from src.routes.customer import customer_bp
 from src.routes.order import order_bp
+from src.routes.quote import quote_bp
+from src.routes.communication import communication_bp
+from src.routes.invoice import invoice_bp
+from src.routes.quality import quality_bp
+from src.routes.inventory import inventory_bp
+from src.routes.timetracking import timetracking_bp
 
 app = Flask(__name__, static_folder='src/static')
 app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
@@ -20,6 +26,12 @@ CORS(app)
 # Register blueprints
 app.register_blueprint(customer_bp, url_prefix='/api')
 app.register_blueprint(order_bp, url_prefix='/api')
+app.register_blueprint(quote_bp, url_prefix='/api')
+app.register_blueprint(communication_bp, url_prefix='/api')
+app.register_blueprint(invoice_bp, url_prefix='/api')
+app.register_blueprint(quality_bp, url_prefix='/api')
+app.register_blueprint(inventory_bp, url_prefix='/api')
+app.register_blueprint(timetracking_bp, url_prefix='/api')
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"

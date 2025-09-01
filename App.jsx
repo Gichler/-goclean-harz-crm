@@ -2,12 +2,16 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
-import { Users, ClipboardList, MessageSquare, BarChart3, FileText, RefreshCw } from 'lucide-react'
-import Dashboard from './components/Dashboard.jsx'
-import Customers from './components/Customers.jsx'
-import Orders from './components/Orders.jsx'
-import Communications from './components/Communications.jsx'
-import Quotes from './components/Quotes.jsx'
+import { Users, ClipboardList, MessageSquare, BarChart3, FileText, RefreshCw, Receipt, CheckCircle, Package, Clock } from 'lucide-react'
+import Dashboard from './src/components/Dashboard.jsx'
+import Customers from './Customers.jsx'
+import Orders from './Orders.jsx'
+import Communications from './Communications.jsx'
+import Quotes from './Quotes.jsx'
+import Invoices from './Invoices.jsx'
+import Quality from './Quality.jsx'
+import Inventory from './Inventory.jsx'
+import TimeTracking from './TimeTracking.jsx'
 import './App.css'
 
 function App() {
@@ -18,6 +22,10 @@ function App() {
     { id: 'customers', label: 'Kunden', icon: Users },
     { id: 'orders', label: 'Aufträge', icon: ClipboardList },
     { id: 'quotes', label: 'Angebote', icon: FileText },
+    { id: 'invoices', label: 'Rechnungen', icon: Receipt },
+    { id: 'quality', label: 'Qualität', icon: CheckCircle },
+    { id: 'inventory', label: 'Lager', icon: Package },
+    { id: 'timetracking', label: 'Zeiterfassung', icon: Clock },
     { id: 'communications', label: 'Kommunikation', icon: MessageSquare },
   ]
 
@@ -31,6 +39,14 @@ function App() {
         return <Orders />
       case 'quotes':
         return <Quotes />
+      case 'invoices':
+        return <Invoices />
+      case 'quality':
+        return <Quality />
+      case 'inventory':
+        return <Inventory />
+      case 'timetracking':
+        return <TimeTracking />
       case 'communications':
         return <Communications />
       default:
@@ -100,7 +116,11 @@ function App() {
                           {item.id === 'dashboard' ? '1' : 
                            item.id === 'customers' ? '2' : 
                            item.id === 'orders' ? '3' : 
-                           item.id === 'quotes' ? '4' : '5'}
+                           item.id === 'quotes' ? '4' : 
+                           item.id === 'invoices' ? '5' : 
+                           item.id === 'quality' ? '6' : 
+                           item.id === 'inventory' ? '7' : 
+                           item.id === 'timetracking' ? '8' : '9'}
                         </span>
                       </button>
                     )

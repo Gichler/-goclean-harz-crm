@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Badge } from './ui/badge.jsx'
 import { Button } from './ui/button.jsx'
 import { Users, ClipboardList, CheckCircle, Clock, AlertCircle, Calendar } from 'lucide-react'
+import { customerAPI, orderAPI } from '../utils/api.js'
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState({
@@ -24,11 +25,37 @@ const Dashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const response = await fetch('/api/orders/dashboard')
-      if (response.ok) {
-        const data = await response.json()
-        setDashboardData(data)
+      // Lade Daten von verschiedenen API-Endpunkten
+      const [customers, orders] = await Promise.all([
+        customerAPI.getAll(),
+        orderAPI.getAll()
+      ])
+      
+      // Berechne Dashboard-Daten
+      const totalCustomers = customers.length
+      const orderCounts = {
+        pending: orders.filter(o => o.status === 'pending').length,
+        confirmed: orders.filter(o => o.status === 'confirmed').length,
+        in_progress: orders.filter(o => o.status === 'in_progress').length,
+        completed: orders.filter(o => o.status === 'completed').length
       }
+      
+      const today = new Date().toISOString().split('T')[0]
+      const todaysOrders = orders.filter(o => o.scheduled_date === today).length
+      
+      const thisWeekOrders = orders.filter(o => {
+        const orderDate = new Date(o.created_at)
+        const weekAgo = new Date()
+        weekAgo.setDate(weekAgo.getDate() - 7)
+        return orderDate >= weekAgo
+      }).length
+      
+      setDashboardData({
+        order_counts: orderCounts,
+        todays_orders: todaysOrders,
+        this_week_orders: thisWeekOrders,
+        total_customers: totalCustomers
+      })
     } catch (error) {
       console.error('Error fetching dashboard data:', error)
     } finally {
